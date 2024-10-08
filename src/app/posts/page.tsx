@@ -4,19 +4,28 @@ import { createPost } from "@/actions/actions"
 
 export default async function PostsPage() {
 
-    const posts = await prisma.post.findMany({
+    // const posts = await prisma.post.findMany({
+    //     where: {
+    //         // title: {
+    //         //     endsWith: "Post"
+    //         // }
+    //     },
+    //     orderBy: {
+    //         createdAt: "desc"
+    //     },
+    //     select: {
+    //         id: true,
+    //         title: true,
+    //         slug: true
+    //     }
+    // })
+
+    const user = await prisma.user.findUnique({
         where: {
-            // title: {
-            //     endsWith: "Post"
-            // }
+            email: "john@gmail.com"
         },
-        orderBy: {
-            createdAt: "desc"
-        },
-        select: {
-            id: true,
-            title: true,
-            slug: true
+        include: {
+            posts: true
         }
     })
 
@@ -26,7 +35,7 @@ export default async function PostsPage() {
         <div>
             <h1>Posts ({totalPosts})</h1>
             <ul>
-                {posts.map((post) => (
+                {user?.posts.map((post) => (
                     <li key={post.id}>
                         <Link href={`/posts/${post.slug}`}>{post.title}</Link>
                     </li>
