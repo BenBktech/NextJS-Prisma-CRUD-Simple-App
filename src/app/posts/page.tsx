@@ -1,13 +1,14 @@
 import Link from "next/link"
 import prisma from "@/lib/db"
+import { createPost } from "@/actions/actions"
 
 export default async function PostsPage() {
 
     const posts = await prisma.post.findMany({
         where: {
-            title: {
-                endsWith: "Post"
-            }
+            // title: {
+            //     endsWith: "Post"
+            // }
         },
         orderBy: {
             createdAt: "desc"
@@ -32,7 +33,7 @@ export default async function PostsPage() {
                 ))}
             </ul>
 
-            <form>
+            <form action={createPost}>
                 <input type="text" name="title" placeholder="Title" />
                 <textarea name="content" placeholder="Content"></textarea>
                 <button type="submit">Create Post</button>
